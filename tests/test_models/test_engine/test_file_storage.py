@@ -17,7 +17,6 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-from models.engine.file_storage import FileStorage
 from models import storage
 import os
 from os import remove
@@ -35,14 +34,15 @@ class FileStorage(unittest.TestCase):
         my_model = BaseModel()
         my_model.name = "Holberton"
         my_model.my_number = 89
-
         """save(self): serializes __objects to the JSON
         file (path: __file_path)"""
-
         my_model.save()
 
     def tearDown(self):
-        os.remove('file.json')
+        try:
+            os.remove('file.json')
+        except:
+            pass
 
     def test_class(self):
         f0 = FileStorage()
@@ -121,3 +121,13 @@ class FileStorage(unittest.TestCase):
                 self.assertEqual(my_model.my_number, obj.my_number)
                 self.assertEqual(my_model.created_at, obj.created_at)
                 self.assertEqual(my_model.updated_at, obj.updated_at)
+
+    def test_reload(self):
+        """deserializes the JSON file to __objects"""
+        storage.__objects = {}
+        self.assertEqual(len(storage.all()), 0)
+        my_model = BaseModel()
+        my_model.save()
+        storage.__objects = {}
+        storage.reload()
+        self.assertNotEqual(len(storage.all()), 0)
