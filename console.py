@@ -135,9 +135,6 @@ class HBNBCommand(cmd.Cmd):
                                 obj = my_dict[dict_id]
                                 if args[2] in obj.__dict__:
                                     my_type = type(obj.__dict__[args[2]])
-                                    print(eval(args[0]+"."+args[2]))
-                                    my_type = type(eval(args[0] + "." +
-                                                        args[2]))
                                     obj.__dict__[args[2]] = my_type(args[3])
                                 else:
                                     obj.__dict__[args[2]] = args[3]
@@ -178,7 +175,9 @@ class HBNBCommand(cmd.Cmd):
             elif args[1].split('(')[0] == 'update':
                 var = args[1].split('(')[1][:-1]
                 values = var.split(',')
-                aux = str(args[0] + ' ' + values[0] + values[1] + values[2])
+                aux = str(args[0] + ' ' + values[0].replace('"', "") +
+                          values[1].replace('"', "") + values[2])
+                print(aux)
                 self.do_update(aux)
         else:
             print("*** Unknown syntax: {}".format(arg))
