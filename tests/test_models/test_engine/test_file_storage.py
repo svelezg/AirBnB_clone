@@ -35,8 +35,10 @@ class FileStorage(unittest.TestCase):
         my_model = BaseModel()
         my_model.name = "Holberton"
         my_model.my_number = 89
+
         """save(self): serializes __objects to the JSON
         file (path: __file_path)"""
+
         my_model.save()
 
     def tearDown(self):
@@ -45,8 +47,6 @@ class FileStorage(unittest.TestCase):
     def test_class(self):
         f0 = FileStorage()
         self.assertTrue(isinstance(f0, FileStorage))
-
-    # def test_attributes(self):
         # self.assertTrue(hasattr(storage, '__file_path'))
         # self.assertTrue(hasattr(storage, '__objects'))
 
@@ -71,11 +71,13 @@ class FileStorage(unittest.TestCase):
         except:
             pass
 
+
     def test_storage_all(self):
         try:
             """reload(self): deserializes the JSON file to __objects (only if the JSON file
             (__file_path) exists ; otherwise, do nothing. If the
             file doesn’t exist,
+
             no exception should be raised)"""
             """all(self): returns the dictionary __objects"""
             """call reload() method on storage"""
@@ -95,8 +97,10 @@ class FileStorage(unittest.TestCase):
             pass
 
     def test_new(self):
+
         """new(self, obj): sets in __objects the obj with
         key <obj class name>.id"""
+
         try:
             obj = User()
             obj.first_name = "New name"
