@@ -121,12 +121,10 @@ class HBNBCommand(cmd.Cmd):
         by adding or updating attribute (save the change into the JSON file)
         """
         if len(arg) != 0:
-            print(arg)
             args_1 = arg.split('"')
             args = args_1[0].split()
             if len(args_1) > 1:
                 args.append(args_1[1])
-            print(args)
             if args[0] in self.list_models:
                 if len(args) >= 2:
                     dict_id = str(args[0] + "." + args[1])
