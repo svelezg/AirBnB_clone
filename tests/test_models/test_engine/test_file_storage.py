@@ -73,45 +73,37 @@ class FileStorage(unittest.TestCase):
 
 
     def test_storage_all(self):
-        try:
-            """reload(self): deserializes the JSON file to __objects (only if the JSON file
-            (__file_path) exists ; otherwise, do nothing. If the
-            file doesn’t exist,
-
-            no exception should be raised)"""
-            """all(self): returns the dictionary __objects"""
-            """call reload() method on storage"""
-            all_objs = storage.all()
-            self.assertIs(type(all_objs), dict)
-            self.assertFalse(all_objs)
-            for obj_id in all_objs.keys():
-                obj = all_objs[obj_id]
-                temp_stdout = StringIO()
-                with contextlib.redirect_stdout(temp_stdout):
-                    print(obj)
-                output = temp_stdout.getvalue().strip()
-                self.assertIn("[User]", output)
-                self.assertIn("'first_name': 'Betty'", output)
-                self.assertIn("'last_name': 'Holberton'", output)
-        except:
-            pass
+        """reload(self): deserializes the JSON file to __objects (only if the JSON file
+        (__file_path) exists ; otherwise, do nothing. If the
+        file doesn’t exist,
+        no exception should be raised)"""
+        """all(self): returns the dictionary __objects"""
+        """call reload() method on storage"""
+        all_objs = storage.all()
+        self.assertIs(type(all_objs), dict)
+        #self.assertFalse(all_objs)
+        for obj_id in all_objs.keys():
+            obj = all_objs[obj_id]
+            temp_stdout = StringIO()
+            with contextlib.redirect_stdout(temp_stdout):
+                print(obj)
+            output = temp_stdout.getvalue().strip()
+            self.assertIn("'id':", output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
 
     def test_new(self):
 
         """new(self, obj): sets in __objects the obj with
         key <obj class name>.id"""
-
-        try:
-            obj = User()
-            obj.first_name = "New name"
-            obj_id = obj.id
-            all_objs = storage.all()
+        obj = User()
+        obj.first_name = "New name"
+        obj_id = str("User." + obj.id)
+        all_objs = storage.all()
+        temp_stdout = StringIO()
+        with contextlib.redirect_stdout(temp_stdout):
             print(all_objs[obj_id])
-            temp_stdout = StringIO()
-            with contextlib.redirect_stdout(temp_stdout):
-                print(obj)
-            output = temp_stdout.getvalue().strip()
-            self.assertIn("[User]", output)
-            self.assertIn("'first_name': 'New name'", output)
-        except:
-            pass
+        output = temp_stdout.getvalue().strip()
+        self.assertIn("[User]", output)
+        self.assertIn("'first_name': 'New name'", output)
+
