@@ -58,10 +58,8 @@ class BaseModel:
         :param self:
         :return: my_dict
         """
-        my_dict = self.__dict__
+        my_dict = self.__dict__.copy()
         my_dict["__class__"] = self.__class__.__name__
-        if type(self.created_at) == datetime:
-            my_dict["created_at"] = str(self.created_at.isoformat())
-        if type(self.updated_at) == datetime:
-            my_dict["updated_at"] = str(self.updated_at.isoformat())
+        my_dict["created_at"] = my_dict['created_at'].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
         return my_dict
