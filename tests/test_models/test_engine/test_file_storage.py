@@ -53,7 +53,6 @@ class FileStorage(unittest.TestCase):
     def test_types(self):
         try:
             """create the variable storage, an instance of FileStorage"""
-
             self.assertIs(type(storage.__file_path), str)
             self.assertIs(type(storage.__objects), dict)
             """__file_path: string - path to the JSON file (ex: file.json)"""
@@ -71,7 +70,6 @@ class FileStorage(unittest.TestCase):
         except:
             pass
 
-
     def test_storage_all(self):
         """reload(self): deserializes the JSON file to __objects (only if the JSON file
         (__file_path) exists ; otherwise, do nothing. If the
@@ -81,7 +79,6 @@ class FileStorage(unittest.TestCase):
         """call reload() method on storage"""
         all_objs = storage.all()
         self.assertIs(type(all_objs), dict)
-        #self.assertFalse(all_objs)
         for obj_id in all_objs.keys():
             obj = all_objs[obj_id]
             temp_stdout = StringIO()
@@ -93,7 +90,6 @@ class FileStorage(unittest.TestCase):
             self.assertIn("'updated_at':", output)
 
     def test_new(self):
-
         """new(self, obj): sets in __objects the obj with
         key <obj class name>.id"""
         obj = User()
@@ -107,3 +103,21 @@ class FileStorage(unittest.TestCase):
         self.assertIn("[User]", output)
         self.assertIn("'first_name': 'New name'", output)
 
+    def test_save(self):
+        os.remove('file.json')
+        my_model = BaseModel()
+        my_model.name = "Holberton"
+        my_model.my_number = 89
+        """save(self): serializes __objects to the JSON
+        file (path: __file_path)"""
+        my_model.save()
+        self.assertTrue(os.access('file.json', os.R_OK))
+        allobjects = storage.all()
+        for obj_id in allobjects.keys():
+            if my_model.id in obj_id:
+                obj = allobjects[obj_id]
+                self.assertEqual(my_model.id, obj.id)
+                self.assertEqual(my_model.name, obj.name)
+                self.assertEqual(my_model.my_number, obj.my_number)
+                self.assertEqual(my_model.created_at, obj.created_at)
+                self.assertEqual(my_model.updated_at, obj.updated_at)
