@@ -15,11 +15,11 @@ Ubuntu 14.04 LTS using Vagrant in VirtualBox
 the command prompt now appears:
 (hbnb)`
 
-##Description
+## Description
 This team project is part of the first year curriculum of Holberton School. 
 The console for the AirBnB clone is mean to be a command interpreter to manage the AirBnB objects.
 
-##Objetives
+## Objectives
 The learning objective of the project are:
 * How to create a Python package
 * How to create a command interpreter in Python using the cmd module
@@ -51,16 +51,20 @@ The learning objective of the project are:
 * help
 * an empty line + ENTER doesn’t execute anything
 ## Example EOF / empty line / quit
+```
 (hbnb) 
 (hbnb) 
 (hbnb) quit
+```
 ## Example help 
+```
 (hbnb) help
 Documented commands (type help <topic>):
 ========================================
 EOF  all  create  destroy  help  quit  show  update
 (hbnb) help quit
 Quit command to exit the program
+```
 ## General commands all / show / create / destroy / update
 ```
 (hbnb) all MyModel
@@ -158,7 +162,7 @@ methods: save() and to_json()
 * **models/engine** directory contains all storage classes (using the same prototype). For the moment you will have only one: **file_storage.py**
 
 # Authors:
-* **Juan A. Londoño** - *Initial Work and Documentación* - [jalondono](https://github.com/jalondono)
-* **Juan F. Calle** - *Initial Work and Documentación* - [svelezg](https://github.com/svelezg)
+* **Juan A. Londoño H.** - *Initial Work and Documentación* - [jalondono](https://github.com/jalondono)
+* **Santiago Vélez G.** - *Initial Work and Documentación* - [svelezg](https://github.com/svelezg)
 
 
