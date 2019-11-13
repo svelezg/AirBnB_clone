@@ -153,10 +153,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
     def default(self, arg):
-        # arg = arg.replace('\\', "")
-        print(arg)
         args = arg.split(".")
-        print(args)
         if args[0] in self.list_models:
             if args[1] == 'all()':
                 self.do_all(args[0])
