@@ -76,6 +76,17 @@ class FileStorage(unittest.TestCase):
         self.assertIn(output2, output3)
         self.assertIn("'created_at': datetime.datetime(", output3)
         self.assertIn("'updated_at': datetime.datetime(", output3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all User")
+        output3 = f.getvalue().strip()
+        # print("newly created object showed by all: {}".format(output3))
+        self.assertIn(output2, output3)
+        self.assertIn("'created_at': datetime.datetime(", output3)
+        self.assertIn("'updated_at': datetime.datetime(", output3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Not Class")
+        output3 = f.getvalue().strip()
+        self.assertIn("** class doesn't exist **", output3)
 
     def test_create(self):
         """Test the create command"""
@@ -89,6 +100,44 @@ class FileStorage(unittest.TestCase):
         self.assertIn(str("[User] (" + output1 + ")"), output2)
         self.assertIn("'created_at': datetime.datetime(", output2)
         self.assertIn("'updated_at': datetime.datetime(", output2)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('create Not a Class')
+        output2 = f.getvalue().strip()
+        self.assertEqual("** class doesn't exist **", output2)
+
+    def test_show2(self):
+        """Test the create command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("User.show(" + output1 + ")")
+            HBNBCommand().onecmd(my_input)
+        output2 = f.getvalue().strip()
+        self.assertIn(str("[User] (" + output1 + ")"), output2)
+        self.assertIn("'created_at': datetime.datetime(", output2)
+        self.assertIn("'updated_at': datetime.datetime(", output2)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('create Not a Class')
+        output2 = f.getvalue().strip()
+        self.assertEqual("** class doesn't exist **", output2)
+
+    def test_count(self):
+        """Test the count command"""
+        storage.__objects = {}
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('User.count()')
+        output2 = f.getvalue().strip()
+        self.assertEqual('1', output2)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.count()")
+        output2 = f.getvalue().strip()
+        self.assertEqual('2', output2)
 
     def test_show_errors(self):
         """Test the show command error messages"""
@@ -125,6 +174,41 @@ class FileStorage(unittest.TestCase):
         output2 = f.getvalue().strip()
         self.assertIn("** no instance found **", output2)
 
+    def test_destroy2(self):
+        """Test the destroy command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("User.destroy(" + output1 + ")")
+            HBNBCommand().onecmd(my_input)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("show User " + output1)
+            HBNBCommand().onecmd(my_input)
+        output2 = f.getvalue().strip()
+        self.assertIn("** no instance found **", output2)
+
+    def test_destroy_errors(self):
+        """Test the destroy command error messages"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("destroy")
+            HBNBCommand().onecmd(my_input)
+        output2 = f.getvalue().strip()
+        self.assertEqual("** class name missing **", output2)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("destroy User")
+            HBNBCommand().onecmd(my_input)
+        output3 = f.getvalue().strip()
+        self.assertIn("** instance id missing **", output3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("destroy User 89698")
+            HBNBCommand().onecmd(my_input)
+        output4 = f.getvalue().strip()
+        self.assertIn("** no instance found **", output4)
+
     def test_update(self):
         """Test the create command"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -140,3 +224,41 @@ class FileStorage(unittest.TestCase):
         self.assertIn(str("[User] (" + output1 + ")"), output2)
         self.assertIn("'created_at': datetime.datetime(", output2)
         self.assertIn("'updated_at': datetime.datetime(", output2)
+
+    def test_update2(self):
+        """Test the create command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input1 = str("User.update(" + output1 + ', "name",'
+                                                       '"test this name")')
+            HBNBCommand().onecmd(my_input1)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input2 = str("show User " + output1)
+            HBNBCommand().onecmd(my_input2)
+        output2 = f.getvalue().strip()
+        self.assertIn(str("[User] (" + output1 + ")"), output2)
+        self.assertIn("'created_at': datetime.datetime(", output2)
+        self.assertIn("'updated_at': datetime.datetime(", output2)
+
+    def test_update_errors(self):
+        """Test the destroy command error messages"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+        output1 = f.getvalue().strip()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("update")
+            HBNBCommand().onecmd(my_input)
+        output2 = f.getvalue().strip()
+        self.assertEqual("** class name missing **", output2)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("update User")
+            HBNBCommand().onecmd(my_input)
+        output3 = f.getvalue().strip()
+        self.assertIn("** instance id missing **", output3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_input = str("update User 89698")
+            HBNBCommand().onecmd(my_input)
+        output4 = f.getvalue().strip()
+        self.assertIn("** no instance found **", output4)
