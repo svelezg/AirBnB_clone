@@ -96,6 +96,34 @@ class FileStorage(unittest.TestCase):
         output3 = f.getvalue().strip()
         self.assertIn("** class doesn't exist **", output3)
 
+    def test_all_string(self):
+        """Test the all command"""
+        storage.__objects = {}
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all")
+        output1 = f.getvalue().strip()
+        # print("empty{}".format(output1))
+        self.assertEqual("", output1)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+            HBNBCommand().onecmd("create User")
+        output2 = f.getvalue().strip()
+        # print("newly created object id: {}".format(output2))
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+        output3 = f.getvalue().strip()
+        # print("newly created object showed by all: {}".format(output3))
+        self.assertIn(output2, output3)
+        self.assertIn("'created_at': datetime.datetime(", output3)
+        self.assertIn("'updated_at': datetime.datetime(", output3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+        output3 = f.getvalue().strip()
+        # print("newly created object showed by all: {}".format(output3))
+        self.assertIn(output2, output3)
+        self.assertIn("'created_at': datetime.datetime(", output3)
+        self.assertIn("'updated_at': datetime.datetime(", output3)
+
     def test_create(self):
         """Test the create command"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -346,11 +374,14 @@ class FileStorage(unittest.TestCase):
                     "EOF  all  create  destroy  help  quit  show  update\n")
         self.with_mock(cmd="help", expected=expected)
 
-    def test_exit(self):
-        self.assertTrue(HBNBCommand().onecmd("quit"))
-
     def test_EOF(self):
-        self.assertTrue(HBNBCommand().onecmd("EOF"))
+        self.with_mock(cmd="EOF", expected="")
+
+    def test_quit(self):
+        self.with_mock(cmd="quit", expected="")
+
+    def test_empty(self):
+        self.with_mock(cmd="\n", expected="")
 
     def test_create_l(self):
         self.with_mock(cmd="create", expected="** class name missing **")
