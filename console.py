@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                             else:
                                 print("** value missing **")
                         else:
-                            print("** attribute name missing")
+                            print("** attribute name missing **")
                     else:
                         print("** no instance found **")
                 else:
@@ -153,7 +153,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
     def default(self, arg):
+        # arg = arg.replace('\\', "")
+        print(arg)
         args = arg.split(".")
+        print(args)
         if args[0] in self.list_models:
             if args[1] == 'all()':
                 self.do_all(args[0])
@@ -173,12 +176,32 @@ class HBNBCommand(cmd.Cmd):
                 aux = str(args[0] + " " + var)
                 self.do_destroy(aux)
             elif args[1].split('(')[0] == 'update':
-                var = args[1].split('(')[1][:-1]
-                values = var.split(',')
-                aux = str(args[0] + ' ' + values[0].replace('"', "") +
-                          values[1].replace('"', "") + values[2])
-                print(aux)
-                self.do_update(aux)
+                if '{' in args[1]:
+                    auxMylist = []
+                    mylist_args = args[1].split(', ')
+                    id = mylist_args[0].split('("')[1][:-1]
+                    for idx, item in enumerate(mylist_args):
+                        item = item.replace('{', '')
+                        item = item.replace('}', '')
+                        item = item.replace('(', '')
+                        item = item.replace(')', '')
+                        item = item.replace('"', '')
+                        item = item.split(': ')
+                        if idx > 0:
+                            auxMylist.append(item)
+                    for pairValues in auxMylist:
+                        stringToDict = args[0] + ' ' + id + ' ' +\
+                                       pairValues[0].translate({39: None}) + \
+                                       ' ' + pairValues[1]
+                        self.do_update(stringToDict)
+                        print(stringToDict)
+                else:
+                    var = args[1].split('(')[1][:-1]
+                    values = var.split(',')
+                    aux = str(args[0] + ' ' + values[0].replace('"', "") +
+                              values[1].replace('"', "") + values[2])
+                    print(aux)
+                    self.do_update(aux)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
