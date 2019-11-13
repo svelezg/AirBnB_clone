@@ -191,7 +191,6 @@ class HBNBCommand(cmd.Cmd):
                                        pairValues[0].translate({39: None}) + \
                                        ' ' + pairValues[1]
                         self.do_update(stringToDict)
-                        print(stringToDict)
                 else:
                     var = args[1].split('(')[1][:-1]
                     values = var.split(',')
