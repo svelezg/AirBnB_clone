@@ -23,19 +23,9 @@
     font-size: 30px
 }
 
-.places h2 {
+h2.top {
     text-align: center;
     font-size: 30px
-}
-
-.top {
-    display: inline-flex;
-    width: 100%;
-}
-
-.top h2 {
-    text-align: center;
-    width: 100%
 }
 
 .price_by_night {
@@ -96,6 +86,79 @@
     padding-top: 10px;
 }
 
-.description {
+article .description {
     padding-top: 10px;
+}
+
+article .amenities {
+    margin-top: 40px;
+    overflow: auto
+}
+
+.amenities h2{
+    font-size: 16px;
+    border-bottom: 1px solid #DDDDDD;
+    text-align: left;
+}
+
+article .reviews {
+    margin-top: 40px;
+    position: relative;
+}
+
+.reviews h2{
+    font-size: 16px;
+    border-bottom: 1px solid #DDDDDD;
+    text-align: left;
+}
+
+.reviews h3 {
+    font-size: 14px;
+    text-align: left;
+    padding-left: 0;
+}
+
+.reviews p {
+    font-size: 12px;
+}
+
+.reviews ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.places .amenities ul {
+    padding-left: 0;
+    height: 100%;
+}
+
+.tv {
+    float: left;
+    width: 100%;
+    background-size: 15px;
+    background-image: url("../images/icon_tv.png");
+    background-repeat: no-repeat;
+    text-indent: 25px;
+    background-position: 0 50%;
+}
+
+.wifi {
+    float: left;
+    width: 100%;
+    background-size: 15px;
+    background-image: url("../images/icon_wifi.png");
+    background-repeat: no-repeat;
+    text-indent: 25px;
+    background-position: 0 50%;
+
+}
+.pets {
+    float: left;
+    width: 100%;
+    background-size: 15px;
+    background-image: url("../images/icon_pets.png");
+    background-repeat: no-repeat;
+    text-indent: 25px;
+    background-position: 0 50%;
+
 }
